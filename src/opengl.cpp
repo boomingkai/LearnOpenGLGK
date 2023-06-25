@@ -6,10 +6,39 @@
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 #include "iostream"
+#include <map>
 
 #define numVAOs 1
 GLuint renderingPrograme;
 GLuint vao[numVAOs];
+
+std::map<int, std::string> ErrorInfo{
+	{0, "NO_ERROR"},
+	{1280, "GL_INVALID_ENUM"},
+	{1281, "GL_INVALID_VALUE"},
+	{1282, "GL_INVALID_OPERATION"},
+	{1283, "GL_STACK_OVERFLOW"},
+	{1284, "GL_STACK_UNDERFLOW"},
+	{1285, "GL_OUT_OF_MEMORY"},
+	{1286, "GL_INVALID_FRAMEBUFFER_OPERATION"},
+	{1287, "GL_CONTEXT_LOST"}
+};
+
+void checkGLError(const std::string& flag = "NO_FLAG") {
+	int code = glGetError();
+
+	if (code != GL_NO_ERROR) {
+		if (flag != "NO_FLAG") {
+			std::cout << "OpenGL ERROR at flag \"" << flag << "\"\n";
+		}
+
+		while (code != GL_NO_ERROR) {
+			std::cerr << "ERROR CODE \"" << code << "\": " << ErrorInfo[code] << std::endl;
+			code = glGetError();
+		}
+	}
+}
+
 
 GLuint createShaderProgram()
 {
@@ -44,8 +73,6 @@ GLuint createShaderProgram()
     return vfProgram;
 }
 
-
-
 void init(GLFWwindow* window)
 {
     renderingPrograme = createShaderProgram();
@@ -58,7 +85,7 @@ void display(GLFWwindow* window, double currentTime)
     // 仅仅将着色器加载进硬件，并没有执行着色器程序
     glUseProgram(renderingPrograme);
     glPointSize(30.0);
-    glDrawArrays(GL_POINT, 0, 1);
+    glDrawArrays(GL_POINTS, 0, 1);
     /*glClearColor(0.0, 0.0, 1.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);*/
 }
