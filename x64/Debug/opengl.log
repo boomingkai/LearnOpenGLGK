@@ -1,6 +1,1 @@
-﻿  opengl.cpp
-D:\myproject\opengl\inlcude\glm\core\func_common.hpp(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-D:\myproject\opengl\inlcude\glm\core\func_common.inl(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-D:\myproject\opengl\inlcude\glm\core\func_integer.hpp(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-D:\myproject\opengl\src\opengl.cpp(17,36): warning C4305: “参数”: 从“double”到“GLclampf”截断
-  opengl.vcxproj -> D:\myproject\opengl\x64\Debug\opengl.exe
+﻿  opengl.vcxproj -> D:\mytest\learnopenglgk\LearnOpenGLGK\x64\Debug\opengl.exe

@@ -1,1 +1,3 @@
 D:\myproject\opengl\x64\Debug\opengl.exe
+D:\mytest\learnopenglgk\LearnOpenGLGK\x64\Debug\opengl.exe
+D:\mytest\learnopenglgk\LearnOpenGLGK\x64\Debug\opengl.pdb
