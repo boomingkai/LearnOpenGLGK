@@ -7,19 +7,61 @@
 #include "GLFW/glfw3.h"
 #include "iostream"
 
+#define numVAOs 1
+GLuint renderingPrograme;
+GLuint vao[numVAOs];
+
+GLuint createShaderProgram()
+{
+    // shader源码
+    const char* vshaderSource =
+        "#version 430 \n"
+        "void main(void)\n"
+        "{ gl_Position = vec4(0.0,0.0,0.0,1.0);}";
+        
+    const char* fshaderSource =
+        "#version 430 \n"
+        "out vec4 color;\n"
+        "void main(void) \n"
+        "{ color = vec4(1.0,0.0,0.0,1.0); }";
+
+    // 创建shader
+    GLuint vShader = glCreateShader(GL_VERTEX_SHADER);
+    GLuint fShader = glCreateShader(GL_FRAGMENT_SHADER);
+    // 关联shader source
+    glShaderSource(vShader, 1, &vshaderSource, NULL);
+    glShaderSource(fShader, 1, &fshaderSource, NULL);
+    // 编译shader
+    glCompileShader(vShader);
+	glCompileShader(fShader);
+    // 创建程序对象
+    GLuint vfProgram = glCreateProgram();
+    // 将着色器加入程序对象
+    glAttachShader(vfProgram, vShader);
+    glAttachShader(vfProgram, fShader);
+    // 请求GLSL编译器
+    glLinkProgram(vfProgram);
+    return vfProgram;
+}
+
+
+
 void init(GLFWwindow* window)
 {
-
+    renderingPrograme = createShaderProgram();
+    glGenVertexArrays(numVAOs, vao);
+    glBindVertexArray(vao[0]);
 }
 
 void display(GLFWwindow* window, double currentTime)
 {
-    glClearColor(1.0, 0.5, 1.0, 0.6);
-    glClear(GL_COLOR_BUFFER_BIT);
+    // 仅仅将着色器加载进硬件，并没有执行着色器程序
+    glUseProgram(renderingPrograme);
+    glPointSize(30.0);
+    glDrawArrays(GL_POINT, 0, 1);
+    /*glClearColor(0.0, 0.0, 1.0, 1.0);
+    glClear(GL_COLOR_BUFFER_BIT);*/
 }
-
-
-
 
 int main()
 {
