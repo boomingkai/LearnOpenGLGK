@@ -13,6 +13,8 @@ set(opengl opengl32.lib)
 
 set(SOURCES
     src/opengl.cpp
+    src/utils.h
+    src/utils.cpp
 )#创建
 
 include_directories(
@@ -36,4 +38,10 @@ add_custom_command(
         TARGET ${PROJECT_NAME}  PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
                 ${CMAKE_CURRENT_SOURCE_DIR}/lib/glew32.dll
+                ${CMAKE_CURRENT_SOURCE_DIR}/build)
+
+add_custom_command(
+        TARGET ${PROJECT_NAME}  PRE_BUILD
+                COMMAND ${CMAKE_COMMAND} -E copy_directory
+                ${CMAKE_CURRENT_SOURCE_DIR}/src/shaders
                 ${CMAKE_CURRENT_SOURCE_DIR}/build)
