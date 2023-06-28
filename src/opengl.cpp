@@ -11,6 +11,7 @@ float inc = 0.01f;
 void init(GLFWwindow* window)
 {
     renderingPrograme = Utils::createShaderProgram("vertShader.glsl", "fragShader.glsl");
+
     glGenVertexArrays(numVAOs, vao);
     glBindVertexArray(vao[0]);
 }
@@ -21,18 +22,18 @@ void display(GLFWwindow* window, double currentTime)
     glClear(GL_DEPTH_BUFFER_BIT);
     glClearColor(0.0, 0.0, 0.0, 1.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    x += inc;
-    if (x > 1.0)
-    {
-        inc = -0.01f;
-    }
-    if (x < -1.0)
-    {
-        inc = 0.01f;
-    }
+	/*x += inc;
+	if (x > 1.0)
+	{
+		inc = -0.01f;
+	}
+	if (x < -1.0)
+	{
+		inc = 0.01f;
+	}
 
-    GLuint offsetLoc = glGetUniformLocation(renderingPrograme, "offset");
-    glProgramUniform1f(renderingPrograme, offsetLoc, x);
+	GLuint offsetLoc = glGetUniformLocation(renderingPrograme, "offset");
+	glProgramUniform1f(renderingPrograme, offsetLoc, x);*/
 
     // 仅仅将着色器加载进硬件，并没有执行着色器程序
     glUseProgram(renderingPrograme);
