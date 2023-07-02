@@ -12,7 +12,7 @@ set(SOIL2 ${CMAKE_SOURCE_DIR}/lib/soil2-debug.lib)
 set(opengl opengl32.lib)
 
 set(SOURCES
-    src/opengl.cpp
+    src/main.cpp
     src/utils.h
     src/utils.cpp
 )#创建
