@@ -3,14 +3,59 @@
 #include "utils.h"
 
 #define numVAOs 1
+#define numVBOs 2
 GLuint renderingPrograme;
 GLuint vao[numVAOs];
+GLuint vbo[numVBOs];
+float camera_x = 0.0;
+float camera_y = 0.0;
+float camera_z = 0.0;
+float cube_location_x = 0.0;
+float cube_location_y = 0.0;
+float cube_location_z = 0.0;
+GLuint mvLoc, projecyLoc;
+int width = 0;
+int height = 0;
+float aspect = 0.0;
+glm::mat4 pMat, mMat, vMat, mvMat;
+
+void setup_vertices(void)
+{
+	float vertexPositions[108] = {
+		-1.0f,  1.0f, -1.0f, -1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f, 1.0f,  1.0f, -1.0f, -1.0f,  1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f, 1.0f, -1.0f,  1.0f, 1.0f,  1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f, 1.0f,  1.0f,  1.0f, 1.0f,  1.0f, -1.0f,
+		1.0f, -1.0f,  1.0f, -1.0f, -1.0f,  1.0f, 1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f, -1.0f,  1.0f,  1.0f, 1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f, -1.0f, -1.0f, -1.0f, -1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f, -1.0f, -1.0f,  1.0f, -1.0f, -1.0f,  1.0f,  1.0f,
+		-1.0f, -1.0f,  1.0f,  1.0f, -1.0f,  1.0f,  1.0f, -1.0f, -1.0f,
+		1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f, -1.0f,  1.0f,
+		-1.0f,  1.0f, -1.0f, 1.0f,  1.0f, -1.0f, 1.0f,  1.0f,  1.0f,
+		1.0f,  1.0f,  1.0f, -1.0f,  1.0f,  1.0f, -1.0f,  1.0f, -1.0f
+	};
+    glGenVertexArrays(1, vao);
+    glBindVertexArray(vao[0]);
+    glGenBuffers(numVBOs, vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, GL_STATIC_DRAW);
+}
+
 float x = 0.0f;
 float inc = 0.01f;
 
 void init(GLFWwindow* window)
 {
     renderingPrograme = Utils::createShaderProgram("vertShader.glsl", "fragShader.glsl");
+
+    camera_x = 0.0f; 
+    camera_y = 0.0f;
+    camera_z = 8.0f;
+
+    cube_location_x = 0.0f;
+    cube_location_y = -2.0f;
+    cube_location_z = 8.0f;
 
     glGenVertexArrays(numVAOs, vao);
     glBindVertexArray(vao[0]);
