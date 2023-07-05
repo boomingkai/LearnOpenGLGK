@@ -60,6 +60,13 @@ void setupVertices(void) {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(pyramidPositions), pyramidPositions, GL_STATIC_DRAW);
 }
 
+void window_reshape_callback(GLFWwindow* window, int newWidth, int newHeight)
+{
+	aspect = (float)newWidth / (float)newHeight;
+	glViewport(0, 0, newWidth, newHeight);
+	pMat = glm::perspective(1.0472f, aspect, 0.1f, 1000.0f);
+}
+
 void init(GLFWwindow* window) {
 	renderingProgram = Utils::createShaderProgram("vertShader.glsl", "fragShader.glsl");
 
@@ -147,7 +154,8 @@ void window_size_callback(GLFWwindow* win, int newWidth, int newHeight) {
 	pMat = glm::perspective(1.0472f, aspect, 0.1f, 1000.0f);
 }
 
-int main(void) {
+int main(void)
+{
 	if (!glfwInit()) { exit(EXIT_FAILURE); }
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -158,6 +166,7 @@ int main(void) {
 
 	glfwSetWindowSizeCallback(window, window_size_callback);
 
+	glfwSetWindowSizeCallback(window, window_reshape_callback);
 	init(window);
 
 	while (!glfwWindowShouldClose(window)) {
