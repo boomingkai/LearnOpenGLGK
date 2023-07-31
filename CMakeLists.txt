@@ -11,11 +11,8 @@ set(GLFW ${CMAKE_SOURCE_DIR}/lib/glfw3.lib)
 set(SOIL2 ${CMAKE_SOURCE_DIR}/lib/soil2-debug.lib)
 set(opengl opengl32.lib)
 
-set(SOURCES
-    src/main.cpp
-    src/utils.h
-    src/utils.cpp
-)#创建
+file(GLOB_RECURSE SOURCES "src/*.cpp" "src/*.h")
+
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/include
