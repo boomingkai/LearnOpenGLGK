@@ -31,14 +31,22 @@ target_link_libraries(
 	${opengl}
 )
 
+
+
 add_custom_command(
-        TARGET ${PROJECT_NAME}  PRE_BUILD
+        TARGET ${PROJECT_NAME}  POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
                 ${CMAKE_CURRENT_SOURCE_DIR}/lib/glew32.dll
                 ${CMAKE_CURRENT_SOURCE_DIR}/build)
 
 add_custom_command(
-        TARGET ${PROJECT_NAME}  PRE_BUILD
+        TARGET ${PROJECT_NAME}  POST_BUILD
                 COMMAND ${CMAKE_COMMAND} -E copy_directory
                 ${CMAKE_CURRENT_SOURCE_DIR}/src/shaders
                 ${CMAKE_CURRENT_SOURCE_DIR}/build)
+				
+add_custom_command(
+        TARGET ${PROJECT_NAME}  POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy
+                ${CMAKE_CURRENT_SOURCE_DIR}/lib/glew32.dll
+                ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/debug)
