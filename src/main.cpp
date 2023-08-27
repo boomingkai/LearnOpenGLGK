@@ -16,7 +16,8 @@ float toRadians(float degrees) { return (degrees * 2.0f * 3.14159f) / 360.0f; }
 
 float cameraX, cameraY, cameraZ;
 float torLocX, torLocY, torLocZ;
-GLuint renderingProgram;
+GLuint renderingProgram1;
+GLuint renderingProgram2;
 GLuint vao[numVAOs];
 GLuint vbo[numVBOs];
 
@@ -47,6 +48,23 @@ float* matAmb = Utils::goldAmbient();
 float* matDif = Utils::goldDiffuse();
 float* matSpe = Utils::goldSpecular();
 float matShi = Utils::goldShininess();
+
+float* bronzeMatAmb = Utils::bronzeAmbient();
+float* bronzeMatDif = Utils::bronzeAmbient();
+float* bronzeMatSpe = Utils::bronzeAmbient();
+float bronzeMatShi = Utils::bronzeShininess();
+
+float curAmb[4], curDif[4], curSpe[4], matAmb[4], matDif[4], matSpe[4];
+float curShi, matShi;
+
+int screenX, screenY;
+GLuint shadowTex, shadowBuffer;
+glm::mat4 lightVmatrix;
+glm::mat4 lightPmatrix;
+glm::mat4 shadowMVP1;
+glm::mat4 shadowMVP2;
+glm::mat4 b;
+
 
 void installLights(glm::mat4 vMatrix) {
 	transformed = glm::vec3(vMatrix * glm::vec4(currentLightPos, 1.0));
@@ -115,7 +133,8 @@ void setupVertices(void) {
 }
 
 void init(GLFWwindow* window) {
-	renderingProgram = Utils::createShaderProgram("./GouraudShaders/vertShader.glsl", "./GouraudShaders/fragShader.glsl");
+	renderingProgram1 = Utils::createShaderProgram("./vert1Shader.glsl", "./frag1Shader.glsl");
+	renderingProgram2 = Utils::createShaderProgram("./vert2Shader.glsl", "./frag2Shader.glsl");
 	cameraX = 0.0f; cameraY = 0.0f; cameraZ = 400.0f;
 	torLocX = 0.0f; torLocY = 0.0f; torLocZ = -1.0f;
 
@@ -124,6 +143,24 @@ void init(GLFWwindow* window) {
 	pMat = glm::perspective(1.0472f, aspect, 0.1f, 1000.0f);
 
 	setupVertices();
+	b = glm::mat4(
+		0.5,0.0,0.0,0.0,
+		0.0,0.5,0.0,0.0,
+		0.0,0.0,0.5,0.0,
+		0.5,0.5,0.5,1.0
+	);
+}
+
+void setupShadowBuffers(GLFWwindow* window)
+{
+	glfwGetFramebufferSize(window, &width, &height);
+	screenX = width;
+	screenY = height;
+	glGenFramebuffers(1, &shadowBuffer);
+	glGenTextures(1, &shadowTex);
+	glBindTexture(GL_TEXTURE_2D, shadowTex);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, screenX, screenY, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+
 }
 
 void display(GLFWwindow* window, double currentTime) {
